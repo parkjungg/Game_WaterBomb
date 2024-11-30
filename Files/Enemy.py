@@ -1,15 +1,16 @@
 from PIL import Image
+import os
 class Enemy:
     """적 클래스 정의"""
-    def __init__(self, start_row, start_col, tile_size, sprite_folder):
+    def __init__(self, start_row, start_col, tile_size, sprite_folder, enemy_image, health):
         self.x = start_col * tile_size + tile_size // 2  # 적의 초기 X 위치 (픽셀 단위)
         self.y = start_row * tile_size + tile_size // 2  # 적의 초기 Y 위치 (픽셀 단위)
         self.target_x = self.x  # 목표 X 위치
         self.target_y = self.y  # 목표 Y 위치
         self.tile_size = tile_size
-        self.speed = 2  # 이동 속도 (픽셀 단위)
-
-        self.image = Image.open(f"{sprite_folder}/enemy1.png").resize((tile_size, tile_size), Image.ANTIALIAS)
+        self.speed = 2  # 이동 속도
+        self.health = health
+        self.image = Image.open(os.path.join(sprite_folder, enemy_image)).resize((tile_size, tile_size))
 
     def update(self):
         """적의 현재 위치를 목표 위치로 점진적으로 이동"""
@@ -31,6 +32,12 @@ class Enemy:
     def is_moving(self):
         """적이 아직 목표 위치로 이동 중인지 확인"""
         return self.x != self.target_x or self.y != self.target_y
+    
+    def take_damage(self, damage = 1):
+        self.health -= damage
+    
+    def is_dead(self):
+        return self.health <= 0
     
     def draw(self, image):
         image.paste(

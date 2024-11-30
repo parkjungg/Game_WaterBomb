@@ -1,19 +1,33 @@
 from Enemy import Enemy
+from Boss import Boss
 import random
 
 class EnemyManager:
     @staticmethod
-    def spawn_enemies(map_data, num_enemies, tile_size, sprite_folder):
-        """맵 데이터에서 회색 타일(road) 위에 적을 랜덤 스폰"""
-        road_tiles = [
-            (row_idx, col_idx)
-            for row_idx, row in enumerate(map_data)
-            for col_idx, tile_type in enumerate(row)
-            if tile_type == "road"
-        ]
-        enemy_positions = random.sample(road_tiles, num_enemies)
-        return [Enemy(row, col, tile_size, sprite_folder) for row, col in enemy_positions]
+    def spawn_enemies(map_data, num_enemies, tile_size, sprite_folder, round_number):
+        enemy_image = EnemyManager.get_enemy_image(round_number)
 
+        # 라운드마다 다른 적의 체력 설정
+        if round_number == 1:
+            health = 1
+        elif round_number == 2:
+            health = 2 
+        else:
+            health = 3
+
+        enemies = []
+        for _ in range(num_enemies):
+            row, col = random.choice([(r, c) for r in range(len(map_data)) for c in range(len(map_data[0])) if map_data[r][c] == "road"])
+            enemy = Enemy(row, col, tile_size, sprite_folder, enemy_image, health)
+            enemies.append(enemy)
+
+        boss = None
+        if round_number >= 3:
+            boss_row, boss_col = random.choice([(r, c) for r in range(len(map_data)) 
+                                                for c in range(len(map_data[0])) if map_data[r][c] == "road"])
+            boss = Boss(boss_row, boss_col, tile_size, sprite_folder)
+        return enemies, boss
+    
     @staticmethod
     def move_enemies(map_data, enemies):
         """적의 목표 위치를 회색 타일(road) 위에서 랜덤하게 설정"""
@@ -31,6 +45,16 @@ class EnemyManager:
                 if possible_moves:
                     new_row, new_col = random.choice(possible_moves)
                     enemy.set_target(new_row, new_col)
+
+    @staticmethod
+    def get_enemy_image(round_number):
+        """라운드에 따라 적이미지 변경"""
+        if round_number == 1:
+            return "enemy1.png"
+        elif round_number == 2:
+            return "enemy2.png"
+        elif round_number >= 3:
+            return "enemy3.png"
 
     @staticmethod
     def draw_enemies(image, enemies):
