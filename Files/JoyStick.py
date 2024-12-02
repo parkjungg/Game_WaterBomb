@@ -62,14 +62,3 @@ class Joystick:
         """특정 버튼이 눌렸는지 확인"""
         return not button.value  # 버튼이 눌리면 False -> True로 변환
 
-    def is_any_pressed(self):
-        """어떤 버튼이든 눌렸는지 확인"""
-        return (
-            not self.button_A.value or
-            not self.button_B.value or
-            not self.button_L.value or
-            not self.button_R.value or
-            not self.button_U.value or
-            not self.button_D.value or
-            not self.button_C.value
-        )

@@ -122,7 +122,7 @@ def main_game():
                     if map_data[r][c] == "box":
                         map_data[r][c] = "road"
                         remaining_boxes = sum(row.count("box") for row in map_data)
-                        if not key_dropped and (random() < 0.1 or remaining_boxes == 0):  # 10% 확률 또는 마지막 박스에서 키 드랍
+                        if not key_dropped and (random() < 0.1 or remaining_boxes == 0) and round_number != 3:  # 10% 확률 또는 마지막 박스에서 키 드랍
                             items.append(Item(r, c, "key", tile_size, sprite_folder))
                             key_dropped = True
                         elif random() < 0.3:  # 30% 확률로 다른 아이템 드랍

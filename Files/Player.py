@@ -10,7 +10,7 @@ class Player:
         # 초기 위치 설정 (road나 grass 타일 중 랜덤 선택)
         self.row, self.col = self.get_random_spawn_location()
 
-        # 현재 위치와 목표 위치 (픽셀 단위)
+        # 현재 위치와 목표 위치
         self.x = self.col * self.tile_size + self.tile_size // 2
         self.y = self.row * self.tile_size + self.tile_size // 2
         self.target_x = self.x
@@ -51,7 +51,7 @@ class Player:
             self.target_y = self.row * self.tile_size + self.tile_size // 2
 
     def update(self):
-        """현재 위치를 목표 위치로 점진적으로 이동"""
+        """현재 위치를 목표 위치로 이동"""
         if self.x < self.target_x:
             self.x = min(self.x + self.speed, self.target_x)
         elif self.x > self.target_x:
@@ -63,7 +63,6 @@ class Player:
             self.y = max(self.y - self.speed, self.target_y)
 
     def is_moving(self):
-        """플레이어가 아직 목표 위치로 이동 중인지 확인"""
         return self.x != self.target_x or self.y != self.target_y
     
     def apply_item_effect(self, item_type):

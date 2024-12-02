@@ -30,7 +30,7 @@ class EnemyManager:
     
     @staticmethod
     def move_enemies(map_data, enemies):
-        """적의 목표 위치를 회색 타일(road) 위에서 랜덤하게 설정"""
+        """적의 목표 위치를 road, grass 타일 위에서 랜덤하게 설정"""
         directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # 상, 하, 좌, 우
         for enemy in enemies:
             if not enemy.is_moving():
@@ -58,6 +58,5 @@ class EnemyManager:
 
     @staticmethod
     def draw_enemies(image, enemies):
-        """적을 화면에 작은 원으로 표시"""
         for enemy in enemies:
             enemy.draw(image)
